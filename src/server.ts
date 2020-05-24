@@ -1,22 +1,12 @@
-import express, { Request, Response, Express } from 'express';
-import { json, urlencoded } from 'body-parser';
-import morgan from 'morgan';
+import { Request, Response, Express } from 'express';
 import config from './config';
-import cors from 'cors';
-import { signup, signin, authentication, protect } from './utils/auth';
+import { signup, signin, protect } from './utils/auth';
 import { connect } from './utils/db';
+import { initializeExpress } from './express';
 
-export const app: Express = express();
+const app: Express = initializeExpress();
 
-app.disable('x-powered-by');
-
-app.use(cors());
-app.use(json());
-app.use(urlencoded({ extended: true }));
-app.use(morgan('dev'));
-app.use(authentication());
-
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Hello' });
 });
 
