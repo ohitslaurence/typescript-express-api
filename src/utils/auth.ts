@@ -1,4 +1,5 @@
 import { Request, Response, Handler } from 'express';
+import config from '../config';
 import { User, IUser } from '../models/user/user.model';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
@@ -9,7 +10,7 @@ export const authentication = (): Handler => {
 
   const jwtOptions: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'tasmanianDevil',
+    secretOrKey: config.secrets.jwt,
   };
 
   const strategy: Strategy = new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
@@ -28,7 +29,7 @@ export const authentication = (): Handler => {
 };
 
 export const issueToken = (user: IUser): string => {
-  return jwt.sign({ id: user.id }, 'tasmanianDevil', {
+  return jwt.sign({ id: user.id }, config.secrets.jwt, {
     expiresIn: '100d',
   });
 };

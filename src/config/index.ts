@@ -1,12 +1,16 @@
 import { merge } from 'lodash';
 const env = process.env.NODE_ENV || 'development';
 
+interface Secrets {
+  jwt: string;
+  jwtExp: string;
+}
 export interface IConfiguration {
   env: string;
   isDev: boolean;
   isTest: boolean;
   port: number;
-  secrets: Record<string, unknown>;
+  secrets: Secrets;
   dbUrl: string;
 }
 const baseConfig: IConfiguration = {
@@ -15,7 +19,7 @@ const baseConfig: IConfiguration = {
   isTest: env === 'testing',
   port: 3000,
   secrets: {
-    jwt: process.env.JWT_SECRET,
+    jwt: process.env.JWT_SECRET || '',
     jwtExp: '100d',
   },
   dbUrl: '',
@@ -36,4 +40,4 @@ switch (env) {
     envConfig = require('./dev').config;
 }
 
-export default merge(baseConfig, envConfig);
+export default merge(baseConfig, envConfig) as IConfiguration;

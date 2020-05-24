@@ -6,6 +6,7 @@ export interface IUser extends Document {
   password: string;
   fname: string;
   sname: string;
+  email: string;
   checkPassword: (password: string) => Promise<boolean>;
 }
 

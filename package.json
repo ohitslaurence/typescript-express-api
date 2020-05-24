@@ -5,9 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
+    "test:dev": "NODE_ENV=testing jest --watchAll --detectOpenHandles",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
-    "start": "rimraf ./dist && tsc && node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "rimraf ./dist && tsc && node ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -44,7 +44,38 @@
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
+    "ts-jest": "^26.0.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.9.3"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.(ts|tsx|js)?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/__data__/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverage": false,
+    "testEnvironment": "node"
   }
 }
