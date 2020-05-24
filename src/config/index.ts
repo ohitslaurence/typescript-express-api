@@ -13,6 +13,7 @@ export interface IConfiguration {
   secrets: Secrets;
   dbUrl: string;
 }
+
 const baseConfig: IConfiguration = {
   env,
   isDev: env === 'development',
@@ -22,7 +23,7 @@ const baseConfig: IConfiguration = {
     jwt: process.env.JWT_SECRET || '',
     jwtExp: '100d',
   },
-  dbUrl: '',
+  dbUrl: process.env.DB_URL || '',
 };
 
 let envConfig = {};
@@ -37,7 +38,7 @@ switch (env) {
     envConfig = require('./testing').config;
     break;
   default:
-    envConfig = require('./dev').config;
+    break;
 }
 
 export default merge(baseConfig, envConfig) as IConfiguration;
