@@ -3,7 +3,7 @@ import { json, urlencoded } from 'body-parser';
 import morgan from 'morgan';
 import config from './config';
 import cors from 'cors';
-// import { signup, signin, protect } from './utils/auth';
+import { signup, signin, authentication, protect } from './utils/auth';
 import { connect } from './utils/db';
 
 export const app: Express = express();
@@ -14,9 +14,10 @@ app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(authentication());
 
 app.get('/', (req: Request, res: Response) => {
-  res.send({ message: 'Hello' });
+  res.json({ message: 'Hello' });
 });
 
 app.post('/', (req: Request, res: Response) => {
@@ -24,10 +25,13 @@ app.post('/', (req: Request, res: Response) => {
   res.send({ message: 'Ok' });
 });
 
-// app.post('/signup', signup);
-// app.post('/signin', signin);
+app.post('/signup', signup);
+app.post('/signin', signin);
 
-// app.use('/api', protect);
+app.get('/secret', protect, (req: Request, res: Response) => {
+  console.log(req.user);
+  res.json({ message: 'You have reached the protect route!' });
+});
 
 export const start = async (): Promise<void> => {
   try {
